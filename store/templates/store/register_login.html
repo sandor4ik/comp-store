@@ -1,0 +1,35 @@
+{% extends 'store/main.html' %}
+{% load static %}
+{% block content %}
+
+<body>
+    <div class="auth-form-container">
+        <form method="POST" action="">
+            {% csrf_token %}
+            {% if page == 'login' %}
+                <div class="form-field">
+                    <label>Email</label>
+                    <input type="email" name="email" placeholder="Enter Your Email" />
+                </div>
+                <div class="form-field">
+                    <label>Password</label>
+                    <input type="password" name="password" placeholder="Enter Your Password" />
+                </div>
+                <input type="submit" value="Login" class="btn btn-success btn-block">
+                <p>Haven't signed up yet?</p>
+                <a href="{% url 'register' %}" class="btn btn-success btn-block">Sign Up</a>
+            {% else %}
+                {% for field in form %}
+                    <div class="form-field">
+                        <label for="{{field.id_for_label}}">{{field.label}}</label>
+                        {{field}}
+                    </div>
+                {% endfor %}
+                <button type="submit" class="btn btn-success btn-block">Register</button>
+                <p>Already signed up?</p>
+                <a href="{% url 'login' %}" class="btn btn-success btn-block">Login</a>
+            {% endif %}
+        </form>
+    </div>
+</body>
+{% endblock content %}

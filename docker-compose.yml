@@ -14,7 +14,12 @@ services:
     command: bash -c 'sleep 5 && python manage.py runserver 0.0.0.0:8000'
     volumes:
       - .:/code
+      - static_volume:/code/staticfiles
     ports:
       - '8000:8000'
     depends_on:
       - db
+
+volumes:
+  postgres_data:
+  static_volume:
