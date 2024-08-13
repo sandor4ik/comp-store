@@ -15,9 +15,17 @@ class Customer(models.Model):
             return "CUSTOMER NAME IS NULL"
         return self.name
     
+class Category(models.Model):
+    name = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.name
+    
 class Product(models.Model):
     name = models.CharField(max_length=200, null=True)
     price = models.DecimalField(max_digits=7, decimal_places=2)
+    description = models.TextField(null=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=False, default=True)
     digital = models.BooleanField(default=False, null=True, blank=False)
     image = models.ImageField(null=True, blank=True)
 
@@ -31,7 +39,7 @@ class Product(models.Model):
         except:
             url = ''
         return url
-    
+
 class Order(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, blank=True, null=True)
     date_ordered = models.DateTimeField(auto_now_add=True, null=True, blank=False)

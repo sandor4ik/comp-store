@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
 from django.contrib.auth import authenticate, login, logout, get_backends
 from django.contrib import messages
@@ -74,12 +74,30 @@ def logoutCustomer(request):
 
 def store(request):
 
+    category = request.GET.get('category')
+    
+    if category == None:
+        products = Product.objects.all()
+    else:
+        products = Product.objects.filter(category__name=category)
+
+    categories = Category.objects.all()
+
     data = cartData(request)
     cartItems = data['cartItems']
 
-    products = Product.objects.all()
-    context = {'products':products, 'cartItems':cartItems}
+    context = {
+        'products':products, 
+        'cartItems':cartItems,
+        'categories':categories}
+    
     return render(request, 'store/store.html', context)
+
+def productPage(request, pk):
+
+    product = get_object_or_404(Product, pk=pk)
+
+    return render(request, 'store/product_page.html', {'product':product})
 
 def cart(request):
 
